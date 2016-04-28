@@ -47,3 +47,12 @@ fabric.properties
 ### Jade
 APDescription.txt
 MTPs-Main-Container.txt
+
+### NetBeans template
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+.nb-gradle/

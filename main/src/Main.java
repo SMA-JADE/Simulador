@@ -1,3 +1,5 @@
+import agents.OrderAgent;
+
 public class Main {
 
     /**
@@ -8,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         jade.Boot.main(new String[]{
                 "-gui",
-                //Agentito:ClaseAgente(args);OtroAgente....
+                "Order:"+ OrderAgent.class.getName()
         });
     }
 }
