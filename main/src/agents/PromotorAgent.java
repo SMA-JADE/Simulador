@@ -10,30 +10,36 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
+import util.ResourcesManager;
 
 /**
- *
  * @author Erick
  */
-public class PromotorAgent extends Agent{
+public class PromotorAgent extends Agent {
     public final static String ORDEN = "Pizza peperoni";
-    protected void setup (){
-        System.out.println("Agent "+getLocalName());
-        addBehaviour( new CyclicBehaviour( this ) {
+
+    protected void setup() {
+        System.out.println("Agent " + getLocalName());
+        addBehaviour(new CyclicBehaviour(this) {
             public void action() {
-                ACLMessage msg = receive();
-                    if (msg != null) {
-                        if (ORDEN.equals( msg.getContent() )) {
-                            doWait(500);//Espera medio segundo
-                            doWake();
-                            ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
-                            mResp.setContent("Orden lista");
-                            send(mResp);
-                        }             
-                    else {
-                            block();
-                        }
+                if (!ResourcesManager.noClients()) {
+                    AgentController a = ResourcesManager.getClient();
+                    try {
+                        a.start();
+                    } catch (StaleProxyException e) {
+                        e.printStackTrace();
                     }
+                    ACLMessage msg = blockingReceive();
+                    if (msg != null) {
+                        doWait(1000);//Espera para que el pedido quede (?
+                        doWake();
+                        ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
+                        mResp.setContent("Orden lista");
+                        send(mResp);
+                    }
+                }
             }
         });
     }

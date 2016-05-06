@@ -18,6 +18,13 @@ public class ResourcesManager {
     public static void removeClient(){
         clients.remove(0);
     }
+
+    public static AgentController getClient(){
+        AgentController a =clients.get(0);
+        removeClient();
+        return a;
+    }
+
     //El nombre habla por si solo 8)
     public static void removeAllClients(){
         clients.clear();
