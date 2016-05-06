@@ -1,4 +1,7 @@
+import agents.MasterAgent;
 import agents.OrderAgent;
+import agents.ClientAgent;
+//import agents.PromotorAgent;
 
 public class Main {
 
@@ -10,7 +13,9 @@ public class Main {
     public static void main(String[] args) {
         jade.Boot.main(new String[]{
                 "-gui",
-                "Order:"+ OrderAgent.class.getName()
+                //"ClientAgent:"+ClientAgent.class.getName(),
+                "MasterAgent:"+ MasterAgent.class.getName()
+                //"Order:"+ OrderAgent.class.getName()
         });
     }
 }
