@@ -18,12 +18,11 @@ public class OrderAgent extends Agent {
 
         fsm.registerFirstState(new PizzaState(this, 0, () -> {
             System.out.println("esperando...");
-
             return -1;
         }), "a");
 
         fsm.registerState(new PizzaState(this, 5000, () -> {
-
+            System.out.println("Pizza peperoniada");
             return -1;
         }), "b");
         fsm.registerState(new PizzaState(this, 5000, () -> {
