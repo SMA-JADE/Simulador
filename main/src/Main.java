@@ -15,9 +15,9 @@ public class Main {
         jade.Boot.main(new String[]{
                 "-gui",
                 //"ClientAgent:"+ClientAgent.class.getName(),
-                "MasterAgent:"+ MasterAgent.class.getName()+
-                ";PromotorAgent:"+ PromotorAgent.class.getName()
-                //"Order:"+ OrderAgent.class.getName()
+               // "MasterAgent:"+ MasterAgent.class.getName()+
+                //";PromotorAgent:"+ PromotorAgent.class.getName()
+                "Order:"+ OrderAgent.class.getName()
         });
     }
 }

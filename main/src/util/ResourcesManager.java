@@ -1,6 +1,5 @@
 package util;
 
-import UI.Pizza;
 import jade.wrapper.AgentController;
 
 import java.util.ArrayList;
@@ -9,6 +8,12 @@ import java.util.ArrayList;
  * Created by ernesto on 2/05/16.
  */
 public class ResourcesManager {
+    public static final long TIEMPO_VESTIDO = 2000;
+    public static final long TIEMPO_HORNO = 5000;
+    public static final long TIEMPO_CORTADO = 1000;
+    public static final long TIEMPO_QUEMADO = 1000;
+    public static final long TIEMPO_CADUCIDAD = 30000;
+
     private static ArrayList<AgentController> clients = new ArrayList<>();
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
 
@@ -40,10 +45,12 @@ public class ResourcesManager {
         pizzas.add(pizza);
     }
 
-    public static Pizza getPizza(){
-        Pizza p = pizzas.get(0);
-        pizzas.remove(0);
-        return p;
+    public static Pizza popPizza(){
+        return pizzas.remove(0);
+    }
+
+    public static Pizza peekPizza(){
+        return pizzas.get(0);
     }
 
     public static boolean noPizzas(){
