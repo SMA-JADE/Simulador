@@ -19,35 +19,39 @@ public class OrderAgent extends Agent {
     /**
      * Contenido del mensaje que manda el empleado general para empezar el proceso
      */
-    public static String REPLY_ENTRA_ORDEN = "entra una";
+    public static final String REPLY_ENTRA_ORDEN = "entra una";
     /**
      * Contenido del mensaje que manda OrderAgent para terminar de vestir
      */
-    public static String MSG_VESTIDA = "pizza peperonniada";
+    public static final String MSG_VESTIDA = "pizza peperonniada";
     /**
      * Contendio del mensaje que manda empleado general para sacar pizza del horno
      */
-    public static String REPLY_SACANDO_HORNO = "sacando del horno";
+    public static final String REPLY_SACANDO_HORNO = "sacando del horno";
     /**
      * Contenido del mensaje que manda OrderAgent para dejar pizza en crescor (cola de
      * pizzas listas)
      */
-    public static String MSG_EN_CRESCOR = "pizza en crescor";
+    public static final String MSG_EN_CRESCOR = "pizza en crescor";
 
-    public static int SUCCESS = 1, FAIL = 0;
+    public static final int SUCCESS = 1, FAIL = 0;
     private ACLMessage msg;
+    private String clientName, order;
 
     @Override
     protected void setup() {
         FSMBehaviour fsm = new FSMBehaviour(this);
 
+        //crear agente con nombre del cliente y orden
+        Object args[] = getArguments();
+        clientName = (String)args[0];
+        order = (String)args[1];
         //TODO: empleado general tiene que estar pendiente de las ordenes entrantes
 
         fsm.registerFirstState(new PizzaState(this, 0, () -> {
             System.out.println("esperando...");
             msg = blockingReceive();
-            return msg.getPerformative() == ACLMessage.AGREE
-                    && msg.getContent().equals(REPLY_ENTRA_ORDEN) ? SUCCESS : FAIL;
+            return msg.getContent().equals(REPLY_ENTRA_ORDEN) ? SUCCESS : FAIL;
             //TODO: empleado general deberá bloquearse esperando respuesta
         }), "a");
 
@@ -66,7 +70,7 @@ public class OrderAgent extends Agent {
             msg = blockingReceive(ResourcesManager.TIEMPO_QUEMADO);
             if(msg == null){
                 System.out.println("me quemé");
-                return 0;
+                return FAIL;
             }
             return msg.getContent().equals(REPLY_SACANDO_HORNO) ? SUCCESS : FAIL;
             //TODO: empleado general deberá bloquearse esperando respuesta
@@ -78,7 +82,9 @@ public class OrderAgent extends Agent {
             response.setContent(MSG_EN_CRESCOR);
             send(response);
             // se desocupa empleado general
-            ResourcesManager.addPizza(new Pizza(false));
+            Pizza p = new Pizza(order != null);
+            p.setCliente(clientName);
+            ResourcesManager.addPizza(p);
             this.doDelete();
             return SUCCESS;
         }), "d");
