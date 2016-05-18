@@ -178,6 +178,8 @@ public class MainFrame extends JFrame{
         m_owner.addBehaviour( new OneShotBehaviour() {
             public void action() {
                 ((MasterAgent) myAgent).createClients( slide_numClients.getValue() );
+                ((MasterAgent) myAgent).createPromotores(slide_numPromotores.getValue());
+                ((MasterAgent) myAgent).createEmpleados(slide_numEmpleados.getValue());
             }
         } );
     }

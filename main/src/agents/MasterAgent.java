@@ -59,6 +59,32 @@ public class MasterAgent extends Agent {
         }
     }
 
+    public void createPromotores(int num_promotes){
+        PlatformController container = getContainerController();
+        try {
+            for (int i = 0; i < num_promotes; i++) {
+                String localname = "promotor-" + i;
+                AgentController promotor = container.createNewAgent(localname, "agents.PromotorAgent", null);
+                promotor.start();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void createEmpleados(int num_empleados){
+        PlatformController container = getContainerController();
+        try {
+            for (int i = 0; i < num_empleados; i++) {
+                String localname = "empleado-" + i;
+                AgentController promotor = container.createNewAgent(localname, "agents.EGeneralAgent", null);
+                promotor.start();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void close() {
         ResourcesManager.removeAllClients();
     }
