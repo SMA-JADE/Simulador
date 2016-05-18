@@ -1,5 +1,6 @@
 package util;
 
+import agents.OrderAgent;
 import jade.wrapper.AgentController;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class ResourcesManager {
 
     private static ArrayList<AgentController> clients = new ArrayList<>();
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
+    private static ArrayList<OrderAgent> ordenes = new ArrayList<>();
 
     // Añadiendo de forma elegante
     public static void addClient(AgentController c){
@@ -56,6 +58,19 @@ public class ResourcesManager {
     public static boolean noPizzas(){
         return pizzas.size() == 0;
     }
+
+    public static void addOrder(OrderAgent e){
+        ordenes.add(e);
+    }
+
+    public static OrderAgent removeOrder(){
+        return ordenes.remove(0);
+    }
+
+    public static boolean noOrders(){
+        return ordenes.size() == 0;
+    }
+
 
 
 

@@ -38,7 +38,7 @@ public class MasterAgent extends Agent {
     private void setupUI() {
         jframe = new MainFrame( this );
 
-        jframe.setSize( 400, 200 );
+        jframe.setSize( 600, 200 );
         jframe.setLocation( 400, 400 );
         jframe.setVisible( true );
         jframe.validate();
