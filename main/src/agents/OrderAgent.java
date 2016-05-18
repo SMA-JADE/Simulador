@@ -60,28 +60,13 @@ public class OrderAgent extends Agent {
         if(args.length > 0) order = (String)args[0];
         if(args.length > 1) clientName = (String)args[0];
 
-        DFAgentDescription template = new DFAgentDescription();
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType(EGeneralAgent.SERVICE);
-        template.addServices(sd);
-
 
         fsm.registerFirstState(new PizzaState(this, 0, () -> {
             System.out.println("esperando...");
-            try {
-                DFAgentDescription[] result = DFService.search(this, template);
-                if(result.length == 0) return FAIL;
-                ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
-                m.addReceiver(result[0].getName());
-                m.setContent(MSG_ENTRA_ORDEN);
-                send(m);
-                msg = blockingReceive();
-                return msg.getContent().equals(REPLY_ENTRA_ORDEN) ? SUCCESS : FAIL;
-                //TODO: empleado general deberá bloquearse esperando respuesta
-            } catch (FIPAException e) {
-                e.printStackTrace();
-            }
-            return FAIL;
+            //meterse a la cola
+            msg = blockingReceive();
+            return msg.getContent().equals(REPLY_ENTRA_ORDEN) ? SUCCESS : FAIL;
+            //TODO: empleado general deberá bloquearse esperando respuesta
         }), "a");
 
         fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_VESTIDO, () -> {
@@ -95,25 +80,9 @@ public class OrderAgent extends Agent {
 
         fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_HORNO, () -> {
             System.out.println("Pizza saliendo del horno");
-            try {
-                DFAgentDescription[] result = new DFAgentDescription[0];
-                long t = System.currentTimeMillis(), now = t;
-                while(result.length == 0 && now-t < ResourcesManager.TIEMPO_QUEMADO) {
-                    result = DFService.search(this, template);
-                    now = System.currentTimeMillis();
-                }
-                if(now-t < ResourcesManager.TIEMPO_QUEMADO)
-                    return FAIL;
-                ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
-                m.addReceiver(result[0].getName());
-                m.setContent(MSG_SACAR_HORNO);
-                send(m);
-                msg = blockingReceive(ResourcesManager.TIEMPO_QUEMADO);
+            //meterse a la cola
+                msg = blockingReceive();
                 return msg.getContent().equals(REPLY_SACANDO_HORNO) ? SUCCESS : FAIL;
-            } catch (FIPAException e) {
-                e.printStackTrace();
-            }
-            return FAIL;
             //TODO: empleado general deberá bloquearse esperando respuesta
         }), "c");
 
