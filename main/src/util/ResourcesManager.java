@@ -71,6 +71,8 @@ public class ResourcesManager {
         return ordenes.size() == 0;
     }
 
+    public static int getPizzasLength() { return pizzas.size(); }
+
 
 
 
