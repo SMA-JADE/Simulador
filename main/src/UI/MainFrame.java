@@ -21,9 +21,15 @@ public class MainFrame extends JFrame{
     JPanel pnl_num_clients = new JPanel();
     BorderLayout borderLayout3 = new BorderLayout();
     JLabel lbl_numClients = new JLabel();
+    JLabel lbl_numEmpleados = new JLabel();
+    JLabel lbl_numPromo = new JLabel();
     Box box_numClients;
     JLabel lbl_clientsCount = new JLabel();
+    JLabel lbl_promoCount = new JLabel();
+    JLabel lbl_empleaCount = new JLabel();
     JSlider slide_numClients = new JSlider();
+    JSlider slide_numPromotores = new JSlider();
+    JSlider slide_numEmpleados = new JSlider();
     Component component1;
     Component component4;
     GridLayout gridLayout1 = new GridLayout();
@@ -81,14 +87,27 @@ public class MainFrame extends JFrame{
             }
         });
         pnl_num_clients.setLayout(borderLayout3);
-        lbl_numClients.setText("No. of clients:");
+        lbl_numClients.setText("Clientes");
+        lbl_numPromo.setText(("Promotes"));
+        lbl_numEmpleados.setText("Empleados");
         lbl_clientsCount.setMaximumSize(new Dimension(30, 17));
         lbl_clientsCount.setMinimumSize(new Dimension(30, 17));
         lbl_clientsCount.setPreferredSize(new Dimension(30, 17));
         lbl_clientsCount.setText("10");
+        lbl_promoCount.setText("4");
+        lbl_promoCount.setMaximumSize(new Dimension(30, 17));
+        lbl_promoCount.setMinimumSize(new Dimension(30, 17));
+        lbl_promoCount.setPreferredSize(new Dimension(30, 17));
+        lbl_empleaCount.setText("4");
         slide_numClients.setValue(10);
         slide_numClients.setMaximum(1000);
         slide_numClients.addChangeListener(e -> slide_numGuests_stateChanged(e));
+        slide_numPromotores.setValue(4);
+        slide_numPromotores.setMaximum(10);
+        slide_numPromotores.addChangeListener(e -> slide_numPromotores_stateChanged(e));
+        slide_numEmpleados.setValue(4);
+        slide_numEmpleados.setMaximum(10);
+        slide_numEmpleados.addChangeListener(e -> slide_numEmpleados_stateChanged(e));
         gridLayout1.setRows(4);
         gridLayout1.setColumns(2);
         lbl_numIntroductions.setBackground(Color.white);
@@ -121,6 +140,12 @@ public class MainFrame extends JFrame{
         box_numClients.add(lbl_numClients, null);
         box_numClients.add(slide_numClients, null);
         box_numClients.add(lbl_clientsCount, null);
+        box_numClients.add(lbl_numPromo,null);
+        box_numClients.add(slide_numPromotores, null);
+        box_numClients.add(lbl_promoCount, null);
+        box_numClients.add(lbl_numEmpleados, null);
+        box_numClients.add(slide_numEmpleados, null);
+        box_numClients.add(lbl_empleaCount, null);
         this.getContentPane().add(box_buttons, BorderLayout.SOUTH);
         box_buttons.add(component2, null);
         box_buttons.add(btn_start, null);
@@ -138,6 +163,14 @@ public class MainFrame extends JFrame{
         lbl_clientsCount.setText( Integer.toString( slide_numClients.getValue() ) );
     }
 
+    void slide_numPromotores_stateChanged(ChangeEvent e){
+        lbl_promoCount.setText(Integer.toString(slide_numPromotores.getValue()));
+    }
+
+    void slide_numEmpleados_stateChanged(ChangeEvent e){
+        lbl_empleaCount.setText(Integer.toString(slide_numEmpleados.getValue()));
+    }
+
     void btn_start_actionPerformed(ActionEvent e) {
         enableControls( true );
 
@@ -145,6 +178,8 @@ public class MainFrame extends JFrame{
         m_owner.addBehaviour( new OneShotBehaviour() {
             public void action() {
                 ((MasterAgent) myAgent).createClients( slide_numClients.getValue() );
+                ((MasterAgent) myAgent).createPromotores(slide_numPromotores.getValue());
+                ((MasterAgent) myAgent).createEmpleados(slide_numEmpleados.getValue());
             }
         } );
     }

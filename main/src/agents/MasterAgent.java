@@ -38,7 +38,7 @@ public class MasterAgent extends Agent {
     private void setupUI() {
         jframe = new MainFrame( this );
 
-        jframe.setSize( 400, 200 );
+        jframe.setSize( 600, 200 );
         jframe.setLocation( 400, 400 );
         jframe.setVisible( true );
         jframe.validate();
@@ -55,6 +55,32 @@ public class MasterAgent extends Agent {
                 ResourcesManager.addClient(client);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createPromotores(int num_promotes){
+        PlatformController container = getContainerController();
+        try {
+            for (int i = 0; i < num_promotes; i++) {
+                String localname = "promotor-" + i;
+                AgentController promotor = container.createNewAgent(localname, "agents.PromotorAgent", null);
+                promotor.start();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void createEmpleados(int num_empleados){
+        PlatformController container = getContainerController();
+        try {
+            for (int i = 0; i < num_empleados; i++) {
+                String localname = "empleado-" + i;
+                AgentController promotor = container.createNewAgent(localname, "agents.EGeneralAgent", null);
+                promotor.start();
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
