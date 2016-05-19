@@ -12,7 +12,6 @@ public class ResourcesManager {
     public static final long TIEMPO_VESTIDO = 2000;
     public static final long TIEMPO_HORNO = 5000;
     public static final long TIEMPO_CORTADO = 1000;
-    public static final long TIEMPO_QUEMADO = 1000;
     public static final long TIEMPO_CADUCIDAD = 30000;
 
     private static ArrayList<AgentController> clients = new ArrayList<>();
