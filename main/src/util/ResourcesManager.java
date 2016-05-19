@@ -17,6 +17,7 @@ public class ResourcesManager {
     private static ArrayList<AgentController> clients = new ArrayList<>();
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
     private static ArrayList<OrderAgent> ordenes = new ArrayList<>();
+    private static ArrayList<OrderAgent> horno = new ArrayList<>();
 
     // Añadiendo de forma elegante
     public static void addClient(AgentController c){
@@ -72,7 +73,13 @@ public class ResourcesManager {
 
     public static int getPizzasLength() { return pizzas.size(); }
 
+    public static void addToHorno(OrderAgent o){
+        horno.add(o);
+    }
 
+    public static OrderAgent removeFromHorno(){
+        return horno.remove(0);
+    }
 
 
 

@@ -60,7 +60,6 @@ public class OrderAgent extends Agent {
         if(args.length > 0) order = (String)args[0];
         if(args.length > 1) clientName = (String)args[0];
 
-
         fsm.registerFirstState(new PizzaState(this, 0, () -> {
             System.out.println("esperando...");
             //meterse a la cola
@@ -82,7 +81,7 @@ public class OrderAgent extends Agent {
         fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_HORNO, () -> {
             System.out.println("Pizza saliendo del horno");
             //meterse a la cola
-            ResourcesManager.addOrder(this);
+            ResourcesManager.addToHorno(this);
             msg = blockingReceive();
             return msg.getContent().equals(REPLY_SACANDO_HORNO) ? SUCCESS : FAIL;
             //TODO: empleado general deberá bloquearse esperando respuesta

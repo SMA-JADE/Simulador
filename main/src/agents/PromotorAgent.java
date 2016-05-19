@@ -10,6 +10,7 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
@@ -24,11 +25,15 @@ import java.util.Date;
 public class PromotorAgent extends Agent {
     public final static String ORDEN = "Pizza peperoni";
 
+    MessageTemplate clientTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+    MessageTemplate generalTemplate = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+
     protected void setup() {
         System.out.println("Agent " + getLocalName());
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
-                ACLMessage msg = receive();
+                //TODO: receive INFORM template
+                ACLMessage msg = receive(generalTemplate);
                 if(msg != null && msg.getPerformative() == ACLMessage.INFORM){
                     //empleado general termino la orden
                     Pizza p = ResourcesManager.popPizza();
@@ -47,20 +52,22 @@ public class PromotorAgent extends Agent {
                     AgentController a = ResourcesManager.getClient();
                     try {
                         a.start();
-                        msg = receive();
-                        if (msg != null) {
-                            ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
-                            if(msg.getContent() == null && !ResourcesManager.noPizzas()){
-                                mResp.setContent("Orden lista");
-                            }else{
-                                mResp.setContent("Aguanta");
-                                getContainerController().createNewAgent(
-                                        "order"+new Date().toString(),
-                                        OrderAgent.class.getName(),
-                                        new String[]{ a.getName(), msg.getContent()});
-                            }
-                            send(mResp);
+                        ACLMessage welcome = new ACLMessage(ACLMessage.INFORM);
+                        welcome.setContent("holi, bienvenido");
+                        welcome.setSender(new AID(a.getName(), false));
+                        send(welcome);
+                        msg = blockingReceive(clientTemplate);
+                        ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
+                        if(msg.getContent() == null && !ResourcesManager.noPizzas()){
+                            mResp.setContent("Orden lista");
+                        }else{
+                            mResp.setContent("Aguanta");
+                            getContainerController().createNewAgent(
+                                    "order"+new Date().toString(),
+                                    OrderAgent.class.getName(),
+                                    new String[]{ a.getName(), msg.getContent()});
                         }
+                        send(mResp);
                     } catch (StaleProxyException e) {
                         e.printStackTrace();
                     }

@@ -11,8 +11,10 @@ import jade.core.behaviours.CyclicBehaviour;
 public class ClientAgent extends Agent {
 
     protected void setup() {
-        ACLMessage order = new ACLMessage();
-        order.addReceiver(new AID("PromotorAgent", false));
+        //esperando bienvenida
+        ACLMessage wakeMsg = blockingReceive();
+        ACLMessage order = wakeMsg.createReply();
+        order.setPerformative(ACLMessage.REQUEST);
         order.setContent("Quiero una pizza bien Hot & Ready.");
         send(order);
         System.out.print("Orden del cliente " + getName() + " pedida.\n");
