@@ -14,6 +14,8 @@ public class ResourcesManager {
     public static final long TIEMPO_CORTADO = 1000;
     public static final long TIEMPO_CADUCIDAD = 30000;
 
+    static boolean accesingClients = false;
+
     private static ArrayList<AgentController> clients = new ArrayList<>();
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
     private static ArrayList<OrderAgent> ordenes = new ArrayList<>();
@@ -29,8 +31,13 @@ public class ResourcesManager {
     }
 
     public static AgentController getClient(){
-        AgentController a =clients.get(0);
-        removeClient();
+        AgentController a;
+        //TODO: tiempos oscuros de desesperacion, no se si sirva si lo quitas
+        while(accesingClients);
+
+        accesingClients = true;
+        a = clients.size() <= 0 ? null : clients.remove(0);
+        accesingClients = false;
         return a;
     }
 

@@ -24,6 +24,7 @@ import java.util.Date;
  */
 public class PromotorAgent extends Agent {
     public final static String ORDEN = "Pizza peperoni";
+    public final static String WAIT = "Aguanta";
 
     MessageTemplate clientTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     MessageTemplate generalTemplate = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
@@ -49,20 +50,22 @@ public class PromotorAgent extends Agent {
                     } catch (ControllerException e) {
                         e.printStackTrace();
                     }
-                }else if (!ResourcesManager.noClients()) {
-                    System.out.println("Holi???? :c");
+                }else {
                     AgentController a = ResourcesManager.getClient();
+                    if(a == null) return;
+                    System.out.println("Holi???? :c");
                     try {
+
                         ACLMessage welcome = new ACLMessage(ACLMessage.INFORM);
                         welcome.setContent("holi, bienvenido");
-                        welcome.addReceiver(new AID(a.getName(), false));
+                        welcome.addReceiver(new AID(a.getName(), true));
                         send(welcome);
                         msg = blockingReceive(clientTemplate);
                         ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
                         if(msg.getContent() == null && !ResourcesManager.noPizzas()){
                             mResp.setContent("Orden lista");
                         }else{
-                            mResp.setContent("Aguanta");
+                            mResp.setContent(WAIT);
                             getContainerController().createNewAgent(
                                     "order"+new Date().toString(),
                                     OrderAgent.class.getName(),
@@ -70,9 +73,8 @@ public class PromotorAgent extends Agent {
                         }
                         send(mResp);
                         System.out.println("Cliente" +a.getName()+" atendido:3");
-                        a.kill();
                     } catch (StaleProxyException e) {
-
+                        e.printStackTrace();
                     }
                     //getContainerController().getAgent("cliente").activate();
                 }

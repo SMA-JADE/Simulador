@@ -1,9 +1,11 @@
 package agents;
 
+import jade.core.Agent;
+
 /**
  * Created by nancio on 17/05/16.
  */
-public class EGeneralAgent {
+public class EGeneralAgent extends Agent {
     public static final String SERVICE = "service-empleado-general";
 
     /*
