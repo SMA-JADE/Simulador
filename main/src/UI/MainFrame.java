@@ -2,11 +2,16 @@ package UI;
 
 import agents.MasterAgent;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.SequentialBehaviour;
+import util.ClientsWave;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+
+import static agents.MasterAgent.*;
 
 
 public class MainFrame extends JFrame{
@@ -177,9 +182,16 @@ public class MainFrame extends JFrame{
         // add a behaviour to the host to start the conversation going
         m_owner.addBehaviour( new OneShotBehaviour() {
             public void action() {
-                ((MasterAgent) myAgent).createClients( slide_numClients.getValue() );
+                //((MasterAgent) myAgent).createClients(slide_numClients.getValue());
+                SequentialBehaviour b = new SequentialBehaviour();
+                b.addSubBehaviour(new ClientsWave(myAgent, 2000, slide_numClients.getValue()/10*2,"w1"));
+                b.addSubBehaviour(new ClientsWave(myAgent, 500, slide_numClients.getValue()/10*5,"w2"));
+                b.addSubBehaviour(new ClientsWave(myAgent, 1000, slide_numClients.getValue()/10*3,"w3"));
+                myAgent.addBehaviour(b);
+
                 ((MasterAgent) myAgent).createPromotores(slide_numPromotores.getValue());
                 ((MasterAgent) myAgent).createEmpleados(slide_numEmpleados.getValue());
+
             }
         } );
     }

@@ -33,7 +33,7 @@ public class PromotorAgent extends Agent {
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 //TODO: receive INFORM template
-                ACLMessage msg = receive(generalTemplate);
+                ACLMessage msg = blockingReceive(generalTemplate);
                 if(msg != null && msg.getPerformative() == ACLMessage.INFORM){
                     //empleado general termino la orden
                     Pizza p = ResourcesManager.popPizza();
@@ -49,12 +49,12 @@ public class PromotorAgent extends Agent {
                         e.printStackTrace();
                     }
                 }else if (!ResourcesManager.noClients()) {
+                    System.out.println("Holi???? :c");
                     AgentController a = ResourcesManager.getClient();
                     try {
-                        a.start();
                         ACLMessage welcome = new ACLMessage(ACLMessage.INFORM);
                         welcome.setContent("holi, bienvenido");
-                        welcome.setSender(new AID(a.getName(), false));
+                        welcome.addReceiver(new AID(a.getName(), false));
                         send(welcome);
                         msg = blockingReceive(clientTemplate);
                         ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
@@ -68,10 +68,14 @@ public class PromotorAgent extends Agent {
                                     new String[]{ a.getName(), msg.getContent()});
                         }
                         send(mResp);
+                        System.out.println("Cliente" +a.getName()+" atendido:3");
+                        a.kill();
                     } catch (StaleProxyException e) {
-                        e.printStackTrace();
+
                     }
                     //getContainerController().getAgent("cliente").activate();
+                }else{
+
                 }
             }
         });
