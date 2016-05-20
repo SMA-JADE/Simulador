@@ -5,6 +5,7 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.StaleProxyException;
 import util.ResourcesManager;
 
 /**
@@ -18,9 +19,11 @@ public class Gerente extends Agent {
             public void onTick() {
                 // Por lo pronto, el limite sera 20 :)
                 if (ResourcesManager.getPizzasLength() <= 20) {
-                    ACLMessage mas_pizzas = new ACLMessage();
-                    mas_pizzas.setContent("Cantidad de pizzas menor a 20, favor de ponerse a trabajar");
-                    send(mas_pizzas);
+                    try {
+                        getContainerController().createNewAgent("Gerente", "agents.OrderAgent", null);
+                    } catch (StaleProxyException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
