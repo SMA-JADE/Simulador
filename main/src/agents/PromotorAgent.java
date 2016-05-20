@@ -33,8 +33,9 @@ public class PromotorAgent extends Agent {
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 //TODO: receive INFORM template
-                ACLMessage msg = blockingReceive(generalTemplate);
+                ACLMessage msg = receive(generalTemplate);
                 if(msg != null && msg.getPerformative() == ACLMessage.INFORM){
+
                     //empleado general termino la orden
                     Pizza p = ResourcesManager.popPizza();
                     String cliente = p.getCliente();
@@ -74,8 +75,6 @@ public class PromotorAgent extends Agent {
 
                     }
                     //getContainerController().getAgent("cliente").activate();
-                }else{
-
                 }
             }
         });
