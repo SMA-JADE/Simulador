@@ -23,6 +23,7 @@ public class Gerente extends Agent {
                     send(mas_pizzas);
                 }
             }
+        });
     }
 
 }
