@@ -41,6 +41,7 @@ public class ResourcesManager {
         return a;
     }
 
+    public static  int getSizeClients(){return clients.size();}
     //El nombre habla por si solo 8)
     public static void removeAllClients(){
         clients.clear();

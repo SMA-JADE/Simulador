@@ -20,7 +20,6 @@ import javax.swing.*;
 public class MasterAgent extends Agent {
 
     private JFrame jframe;
-
     @Override
     protected void setup() {
         DFAgentDescription dfd = new DFAgentDescription();
@@ -38,7 +37,6 @@ public class MasterAgent extends Agent {
 
     private void setupUI() {
         jframe = new MainFrame( this );
-
         jframe.setSize( 600, 200 );
         jframe.setLocation( 400, 400 );
         jframe.setVisible( true );
@@ -46,6 +44,7 @@ public class MasterAgent extends Agent {
     }
 
     public void createPromotores(int num_promotes){
+        ((MainFrame) jframe).prog_rumourCount.setValue( 0 );
         PlatformController container = getContainerController();
         try {
             for (int i = 0; i < num_promotes; i++) {
@@ -75,6 +74,13 @@ public class MasterAgent extends Agent {
         ResourcesManager.removeAllClients();
     }
 
+    public void incremetBar(int clientesAt, int clientesNA) {
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                ((MainFrame) jframe).prog_rumourCount.setValue( Math.round( 100 * clientesAt/clientesNA) );
+            }
+        } );
+    }
     public void terminateMaster() {
         try{
             if(ResourcesManager.noClients()){

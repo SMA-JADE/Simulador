@@ -42,7 +42,7 @@ public class MainFrame extends JFrame{
     JLabel jLabel4 = new JLabel();
     JLabel lbl_partyState = new JLabel();
     Box box1;
-    JProgressBar prog_rumourCount = new JProgressBar();
+    public JProgressBar prog_rumourCount = new JProgressBar();
     Component component6;
     Component component5;
     JLabel lbl_rumourAvg = new JLabel();

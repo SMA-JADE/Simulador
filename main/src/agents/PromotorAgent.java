@@ -29,6 +29,8 @@ public class PromotorAgent extends Agent {
     MessageTemplate clientTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     MessageTemplate generalTemplate = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
+    protected MasterAgent m_owner;
+    public static int clientesA=0;
     protected void setup() {
         System.out.println("Agent " + getLocalName());
         addBehaviour(new CyclicBehaviour(this) {
@@ -73,6 +75,9 @@ public class PromotorAgent extends Agent {
                         }
                         send(mResp);
                         System.out.println("Cliente" +a.getName()+" atendido:3");
+                        clientesA++;
+                        System.out.println("clientes atendidos "+clientesA);
+                        //m_owner.incremetBar(clientesA,ResourcesManager.getSizeClients());
                     } catch (StaleProxyException e) {
                         e.printStackTrace();
                     }
