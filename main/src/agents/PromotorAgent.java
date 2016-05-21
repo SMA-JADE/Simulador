@@ -77,6 +77,7 @@ public class PromotorAgent extends Agent {
                         System.out.println("Cliente" +a.getName()+" atendido:3");
                         clientesA++;
                         System.out.println("clientes atendidos "+clientesA);
+                        //(MasterAgent)(myAgent.incremetBar(clientesA,ResourcesManager.getSizeClients());
                         //m_owner.incremetBar(clientesA,ResourcesManager.getSizeClients());
                     } catch (StaleProxyException e) {
                         e.printStackTrace();
