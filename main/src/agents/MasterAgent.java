@@ -65,9 +65,14 @@ public class MasterAgent extends Agent {
     public void createEmpleados(int num_empleados){
         PlatformController container = getContainerController();
         try {
-            for (int i = 0; i < num_empleados; i++) {
-                String localname = "empleado-" + i;
-                AgentController promotor = container.createNewAgent(localname, "agents.EGeneralAgent", null);
+            for (int i = 0; i < num_empleados/2; i++) {
+                String localname = "horno-" + i;
+                AgentController promotor = container.createNewAgent(localname, "agents.EGeneralAgent", new String[]{"Horno"});
+                promotor.start();
+            }
+            for (int i = 0; i < (num_empleados+1)/2; i++) {
+                String localname = "peperoni-" + i;
+                AgentController promotor = container.createNewAgent(localname, "agents.EGeneralAgent", new String[]{"Peperoni"});
                 promotor.start();
             }
         }catch (Exception e){
