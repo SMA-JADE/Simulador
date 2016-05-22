@@ -42,15 +42,15 @@ public class PromotorAgent extends Agent {
             public void action() {
                 //TODO: receive INFORM template
                 ACLMessage msg = receive(generalTemplate);
-                if(msg != null && msg.getPerformative() == ACLMessage.INFORM){
-
+                if(msg != null){
+                    System.out.printf("hot n ready baby");
                     //empleado general termino la orden
                     Pizza p = ResourcesManager.popPizza();
                     String cliente = p.getCliente();
                     try {
                         AgentController client = getContainerController().getAgent(cliente);
                         ACLMessage response = new ACLMessage(ACLMessage.CONFIRM);
-                        response.addReceiver(new AID(client.getName(), true));
+                        response.addReceiver(new AID(client.getName(), false));
                         response.setContent("hot n ready");
                         send(response);
                     } catch (ControllerException e) {
@@ -59,7 +59,6 @@ public class PromotorAgent extends Agent {
                 }else {
                     AgentController a = ResourcesManager.getClient();
                     if(a == null) return;
-                    System.out.println("Holi???? :c");
                     try {
 
                         ACLMessage welcome = new ACLMessage(ACLMessage.INFORM);
@@ -73,14 +72,12 @@ public class PromotorAgent extends Agent {
                         }else{
                             mResp.setContent(WAIT);
                             getContainerController().createNewAgent(
-                                    "order"+new Date().toString(),
+                                    "order-"+a.getName(),
                                     OrderAgent.class.getName(),
-                                    new String[]{ a.getName(), msg.getContent(), getLocalName()});
+                                    new String[]{ a.getName(), msg.getContent(), getName()});
                         }
                         send(mResp);
-                        System.out.println("Cliente" +a.getName()+" atendido:3");
                         clientesA++;
-                        System.out.println("clientes atendidos "+clientesA+" faltan "+clientesF);
                         //incremetBar();
                     } catch (StaleProxyException e) {
                         e.printStackTrace();

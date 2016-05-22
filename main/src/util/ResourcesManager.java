@@ -89,6 +89,6 @@ public class ResourcesManager {
         return horno.remove(0);
     }
 
-
+    public static boolean noHorno() { return horno.isEmpty(); }
 
 }

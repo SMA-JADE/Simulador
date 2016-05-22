@@ -50,7 +50,8 @@ public class OrderAgent extends Agent {
 
     public static final int SUCCESS = 1, FAIL = 0;
     private ACLMessage msg;
-    private String clientName = null, order = null, promotor;
+    private String clientName = null, order = null;
+    public String promotor;
 
     @Override
     protected void setup() {

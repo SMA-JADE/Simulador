@@ -12,12 +12,24 @@ import util.Archivo;
 public class ClientAgent extends Agent {
 
     String elapsedTimeText;
+    long start;
     protected void setup() {
         //esperando bienvenida
 
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 ACLMessage wakeMsg = blockingReceive();
+                if (wakeMsg.getContent().equals("hot n ready")){
+                    System.out.println(wakeMsg.getContent() + " LISTOOOOO");
+                    // Get elapsed time in milliseconds
+                    long elapsedTimeMillis = System.currentTimeMillis()-start;
+                    // Get elapsed time in seconds
+                    float elapsedTimeSec = elapsedTimeMillis/1000F;
+                    elapsedTimeText = "Agente: " + getName() + ", atendido en: " +
+                            elapsedTimeSec + " segundos.\n";
+                    //Archivo.guardar("archivin.txt", elapsedTimeText);
+                    myAgent.doDelete();
+                }
                 ACLMessage order = wakeMsg.createReply();
                 order.addReceiver(wakeMsg.getSender());
                 order.setPerformative(ACLMessage.REQUEST);
@@ -25,7 +37,7 @@ public class ClientAgent extends Agent {
                 order.setContent("Quiero una pizza bien Hot & Ready.");
                 send(order);
                 // Get current time
-                long start = System.currentTimeMillis();
+                start = System.currentTimeMillis();
                 System.out.print("Orden del cliente " + getName() + " pedida.\n");
                 ACLMessage msg = blockingReceive();
                 System.out.print("Promotor envio mensaje..\n");
@@ -34,16 +46,6 @@ public class ClientAgent extends Agent {
                         System.out.println("Agente >> "+myAgent.getLocalName()+", en espera de una pizzona");
                         //myAgent.doSuspend(); // Para reactivar el agente usar: doActivate()
                         //System.out.println("Agente >> "+myAgent.getLocalName()+", suspendido");
-                    } else if (msg.getContent().equals("hot n ready")){
-                        System.out.println(msg.getContent() + " LISTOOOOO");
-                        // Get elapsed time in milliseconds
-                        long elapsedTimeMillis = System.currentTimeMillis()-start;
-                        // Get elapsed time in seconds
-                        float elapsedTimeSec = elapsedTimeMillis/1000F;
-                        elapsedTimeText = "Agente: " + getName() + ", atendido en: " +
-                                elapsedTimeSec + " segundos.\n";
-                        //Archivo.guardar("archivin.txt", elapsedTimeText);
-                        myAgent.doDelete();
                     }
                 }
             }
