@@ -17,21 +17,25 @@ import java.util.Date;
  */
 public class EGeneralAgent extends Agent {
     public static final String SERVICE = "service-empleado-general";
-    private String estadoOrden ="EN_HORNO";
+    private String estadoOrden;//debe ser  igual al args Horno
 
     public void setup(){
         System.out.println("Agent " + getLocalName());
         Object args[] = getArguments();
-        //if(args.length > 0) estadoOrden = (String)args[0];
+        if(args.length > 0) estadoOrden = (String)args[0];
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 ACLMessage msg = receive();
                 if (msg != null && msg.getPerformative() == ACLMessage.INFORM) {
-                    if (estadoOrden.equals("EN_HORNO")) {
-                        ResourcesManager.removeOrder();
+                    ACLMessage verificar = new ACLMessage();
+                    verificar.setContent("sacando del horno");
+                    verificar.addReceiver(msg.getSender());
+                    send(verificar);
+                    msg = blockingReceive();
+                    if (OrderAgent.MSG_EN_CRESCOR.equals(msg.getContent())) {//Falta obtener la orden y saber su estado
                         ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
                         listo.setContent("Orden Terminada");
-                        listo.addReceiver(msg.getSender());
+                        //listo.addReceiver("promotor"); falta obtener el promotor
                         send(listo);
                     } else {
                         myAgent.doWait(5000);
