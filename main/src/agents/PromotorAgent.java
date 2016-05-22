@@ -43,9 +43,9 @@ public class PromotorAgent extends Agent {
                 //TODO: receive INFORM template
                 ACLMessage msg = receive(generalTemplate);
                 if(msg != null){
-                    System.out.printf("hot n ready baby");
+                    System.out.println(getLocalName() + ": hot n ready baby");
                     //empleado general termino la orden
-                    Pizza p = ResourcesManager.popPizza();
+                    Pizza p = ResourcesManager.popPizza(msg.getContent());
                     String cliente = p.getCliente();
                     try {
                         AgentController client = getContainerController().getAgent(cliente, true);
@@ -56,18 +56,23 @@ public class PromotorAgent extends Agent {
                     } catch (ControllerException e) {
                         e.printStackTrace();
                     }
-                }else {
+                }else{
+
                     AgentController a = ResourcesManager.getClient();
                     if(a == null) return;
                     try {
-
+                        System.out.println(getLocalName() + ": atendiendo a " + a.getName());
                         ACLMessage welcome = new ACLMessage(ACLMessage.INFORM);
                         welcome.setContent("holi, bienvenido");
                         welcome.addReceiver(new AID(a.getName(), true));
                         send(welcome);
-                        msg = blockingReceive(clientTemplate);
+                        MessageTemplate tmplt = MessageTemplate.and(clientTemplate,
+                                MessageTemplate.MatchSender(new AID(a.getName(), true)));
+                        System.out.println(getLocalName() + ": bloqueo paternal bloqueo bloque bloqueo");
+                        msg = blockingReceive(tmplt);
+                        System.out.println(getLocalName() + ": desbloqueado");
                         ACLMessage mResp = msg.createReply();//respondemos la orden del cliente
-                        if(msg.getContent() == null && !ResourcesManager.noPizzas()){
+                        if(msg.getContent() == null && ResourcesManager.popPizza() != null){
                             mResp.setContent("Orden lista");
                         }else{
                             mResp.setContent(WAIT);

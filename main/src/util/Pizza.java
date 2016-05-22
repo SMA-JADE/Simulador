@@ -28,4 +28,7 @@ public class Pizza {
         return nombre_cliente;
     }
 
+    public boolean isEspecial() {
+        return especial;
+    }
 }
