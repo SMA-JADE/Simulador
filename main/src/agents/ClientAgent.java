@@ -46,7 +46,8 @@ public class ClientAgent extends Agent {
                         System.out.println("Agente >> "+myAgent.getLocalName()+", en espera de una pizzona");
                         //myAgent.doSuspend(); // Para reactivar el agente usar: doActivate()
                         //System.out.println("Agente >> "+myAgent.getLocalName()+", suspendido");
-                    }
+                    }else
+                        doDelete();
                 }
             }
         });

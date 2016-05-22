@@ -59,8 +59,8 @@ public class OrderAgent extends Agent {
 
         //crear agente con nombre del cliente y orden
         Object args[] = getArguments();
-        if(args.length > 0) order = (String)args[0];
-        if(args.length > 1) clientName = (String)args[1];
+        if(args.length > 0) clientName = ((String)args[0]);
+        if(args.length > 1) order = (String)args[1];
         if (args.length > 2) promotor = (String)args[2];
 
         fsm.registerFirstState(new PizzaState(this, 0, () -> {//funcion lambda

@@ -32,14 +32,13 @@ public class EGeneralAgent extends Agent {
                     mensaje.addReceiver(orden.getAID());
                     send(mensaje);
                     ACLMessage msg = blockingReceive();//este mensaje se lo deberia de enviar el peperoniador para que se sepa que hay pizza en el horno
-                    if (OrderAgent.MSG_EN_CRESCOR.equals(msg.getContent())) {//Esta listo y se lo pasamos al promotor
-                        ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
-                        listo.setContent("Orden Terminada");
-                        listo.addReceiver(new AID(orden.promotor, false));
-                        send(listo);
-                    } else {
-                        myAgent.doWait(5000);
-                    }
+                    //Esta listo y se lo pasamos al promotor
+                    System.out.println("EGeneral: Orden terminada");
+                    ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
+                    listo.setContent("Orden Terminada");
+                    listo.addReceiver(new AID(orden.promotor, true));
+                    send(listo);
+
                 }else if(!ResourcesManager.noOrders()){//entonces es peperoniador
                     OrderAgent orden = ResourcesManager.removeOrder();
                     ACLMessage mensaje = new ACLMessage();

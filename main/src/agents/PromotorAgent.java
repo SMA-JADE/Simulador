@@ -48,9 +48,9 @@ public class PromotorAgent extends Agent {
                     Pizza p = ResourcesManager.popPizza();
                     String cliente = p.getCliente();
                     try {
-                        AgentController client = getContainerController().getAgent(cliente);
+                        AgentController client = getContainerController().getAgent(cliente, true);
                         ACLMessage response = new ACLMessage(ACLMessage.CONFIRM);
-                        response.addReceiver(new AID(client.getName(), false));
+                        response.addReceiver(new AID(client.getName(), true));
                         response.setContent("hot n ready");
                         send(response);
                     } catch (ControllerException e) {
@@ -74,7 +74,7 @@ public class PromotorAgent extends Agent {
                             getContainerController().createNewAgent(
                                     "order-"+a.getName(),
                                     OrderAgent.class.getName(),
-                                    new String[]{ a.getName(), msg.getContent(), getName()});
+                                    new String[]{ a.getName(), msg.getContent(), getName()}).start();
                         }
                         send(mResp);
                         clientesA++;
