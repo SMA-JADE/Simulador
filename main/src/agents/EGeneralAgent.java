@@ -17,14 +17,28 @@ import java.util.Date;
  */
 public class EGeneralAgent extends Agent {
     public static final String SERVICE = "service-empleado-general";
-    Object args[] = getArguments();
+    private String estadoOrden;
 
     public void setup(){
+
+        Object args[] = getArguments();
+        if(args.length > 0) estadoOrden = (String)args[0];
+
         System.out.println("Agent " + getLocalName());
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
-                    //getContainerController().getAgent("cliente").activate();
+                ACLMessage msg = receive();
+                if (msg != null && msg.getPerformative() == ACLMessage.INFORM) {
+                    if (estadoOrden == "pizza en crescor") {
+                        ResourcesManager.removeOrder();
+                        ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
+                        listo.addReceiver(msg.getSender());
+                        send(listo);
+                    } else {
+                        myAgent.doWait(5000);
+                    }
                 }
+            }
         });
     }
 

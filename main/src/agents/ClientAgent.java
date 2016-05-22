@@ -42,7 +42,7 @@ public class ClientAgent extends Agent {
                         float elapsedTimeSec = elapsedTimeMillis/1000F;
                         elapsedTimeText = "Agente: " + getName() + ", atendido en: " +
                                 elapsedTimeSec + " segundos.\n";
-                        Archivo.guardar("archivin.txt", elapsedTimeText);
+                        //Archivo.guardar("archivin.txt", elapsedTimeText);
                         myAgent.doDelete();
                     }
                 }

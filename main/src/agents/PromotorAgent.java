@@ -81,7 +81,7 @@ public class PromotorAgent extends Agent {
                         System.out.println("Cliente" +a.getName()+" atendido:3");
                         clientesA++;
                         System.out.println("clientes atendidos "+clientesA+" faltan "+clientesF);
-                        incremetBar();
+                        //incremetBar();
                     } catch (StaleProxyException e) {
                         e.printStackTrace();
                     }
