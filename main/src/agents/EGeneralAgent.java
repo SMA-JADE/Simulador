@@ -25,6 +25,7 @@ public class EGeneralAgent extends Agent {
         if(args.length > 0) estadoOrden = (String)args[0];
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
+                OrderAgent orden = ResourcesManager.removeOrder();
                 ACLMessage msg = receive();
                 if (msg != null && msg.getPerformative() == ACLMessage.INFORM) {
                     ACLMessage verificar = new ACLMessage();
@@ -35,7 +36,7 @@ public class EGeneralAgent extends Agent {
                     if (OrderAgent.MSG_EN_CRESCOR.equals(msg.getContent())) {//Falta obtener la orden y saber su estado
                         ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
                         listo.setContent("Orden Terminada");
-                        //listo.addReceiver("promotor"); falta obtener el promotor
+                        listo.addReceiver(new AID(orden.promotor));
                         send(listo);
                     } else {
                         myAgent.doWait(5000);
