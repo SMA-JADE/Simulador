@@ -1,5 +1,6 @@
 package agents;
 
+import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -49,7 +50,7 @@ public class OrderAgent extends Agent {
 
     public static final int SUCCESS = 1, FAIL = 0;
     private ACLMessage msg;
-    private String clientName = null, order = null;
+    private String clientName = null, order = null, promotor;
 
     @Override
     protected void setup() {
@@ -58,7 +59,8 @@ public class OrderAgent extends Agent {
         //crear agente con nombre del cliente y orden
         Object args[] = getArguments();
         if(args.length > 0) order = (String)args[0];
-        if(args.length > 1) clientName = (String)args[0];
+        if(args.length > 1) clientName = (String)args[1];
+        if (args.length > 2) promotor = (String)args[2];
 
         fsm.registerFirstState(new PizzaState(this, 0, () -> {//funcion lambda
             System.out.println("esperando...");
