@@ -28,6 +28,7 @@ public class PromotorAgent extends Agent {
     public final static String ORDEN = "Pizza peperoni";
     public final static String WAIT = "Aguanta";
 
+
     MessageTemplate clientTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     MessageTemplate generalTemplate = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
@@ -75,7 +76,7 @@ public class PromotorAgent extends Agent {
                             getContainerController().createNewAgent(
                                     "order"+new Date().toString(),
                                     OrderAgent.class.getName(),
-                                    new String[]{ a.getName(), msg.getContent()});
+                                    new String[]{ a.getName(), msg.getContent(), getLocalName()});
                         }
                         send(mResp);
                         System.out.println("Cliente" +a.getName()+" atendido:3");
