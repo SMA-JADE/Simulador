@@ -34,8 +34,8 @@ public class ClientAgent extends Agent {
                         System.out.println("Agente >> "+myAgent.getLocalName()+", en espera de una pizzona");
                         //myAgent.doSuspend(); // Para reactivar el agente usar: doActivate()
                         //System.out.println("Agente >> "+myAgent.getLocalName()+", suspendido");
-                    } else {
-                        System.out.println(msg.getContent());
+                    } else if (msg.getContent().equals("hot n ready")){
+                        System.out.println(msg.getContent() + " LISTOOOOO");
                         // Get elapsed time in milliseconds
                         long elapsedTimeMillis = System.currentTimeMillis()-start;
                         // Get elapsed time in seconds
