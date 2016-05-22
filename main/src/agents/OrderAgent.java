@@ -65,7 +65,7 @@ public class OrderAgent extends Agent {
         fsm.registerFirstState(new PizzaState(this, 0, () -> {//funcion lambda
             System.out.println("esperando...");
             //meterse a la cola
-            ResourcesManager.addOrder(this);
+            ResourcesManager.addOrder(this);//metemos la orden a la cola
             msg = blockingReceive();
             return msg.getContent().equals(REPLY_ENTRA_ORDEN) ? SUCCESS : FAIL;
             //TODO: empleado general deberá bloquearse esperando respuesta
@@ -110,4 +110,5 @@ public class OrderAgent extends Agent {
         addBehaviour(fsm);
         super.setup();
     }
+    public String getOrderName(){return order;}
 }
