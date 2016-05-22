@@ -19,5 +19,7 @@ public class Main {
                 //";PromotorAgent:"+ PromotorAgent.class.getName()
                 //" Order:"+ OrderAgent.class.getName()
         });
+        
+
     }
 }

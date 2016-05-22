@@ -1,6 +1,7 @@
 package UI;
 
 import agents.MasterAgent;
+import agents.PromotorAgent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import util.ClientsWave;
@@ -124,6 +125,7 @@ public class MainFrame extends JFrame{
         lbl_partyState.setText("Not started");
         prog_rumourCount.setForeground(new Color(0, 255, 128));
         prog_rumourCount.setStringPainted(true);
+        prog_rumourCount.setValue(0);
         lbl_rumourAvg.setToolTipText("");
         lbl_rumourAvg.setText("0.0");
         this.getContentPane().add(pnl_main, BorderLayout.CENTER);
@@ -182,7 +184,6 @@ public class MainFrame extends JFrame{
         // add a behaviour to the host to start the conversation going
         m_owner.addBehaviour( new OneShotBehaviour() {
             public void action() {
-                //((MasterAgent) myAgent).createClients(slide_numClients.getValue());
                 SequentialBehaviour b = new SequentialBehaviour();
                 b.addSubBehaviour(new ClientsWave(myAgent, 2000, slide_numClients.getValue()/10*2,"w1"));
                 b.addSubBehaviour(new ClientsWave(myAgent, 500, slide_numClients.getValue()/10*5,"w2"));
@@ -191,9 +192,13 @@ public class MainFrame extends JFrame{
 
                 ((MasterAgent) myAgent).createPromotores(slide_numPromotores.getValue());
                 ((MasterAgent) myAgent).createEmpleados(slide_numEmpleados.getValue());
+                //((MasterAgent) myAgent).incremetBar(10,90);
 
             }
         } );
+    }
+    MasterAgent getMasterAgent (){
+        return  ((MasterAgent) m_owner);
     }
 
     void btn_stop_actionPerformed(ActionEvent e) {

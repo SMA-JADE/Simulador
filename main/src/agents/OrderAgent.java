@@ -53,14 +53,14 @@ public class OrderAgent extends Agent {
 
     @Override
     protected void setup() {
-        FSMBehaviour fsm = new FSMBehaviour(this);
+        FSMBehaviour fsm = new FSMBehaviour(this);//maquina de estados
 
         //crear agente con nombre del cliente y orden
         Object args[] = getArguments();
         if(args.length > 0) order = (String)args[0];
         if(args.length > 1) clientName = (String)args[0];
 
-        fsm.registerFirstState(new PizzaState(this, 0, () -> {
+        fsm.registerFirstState(new PizzaState(this, 0, () -> {//funcion lambda
             System.out.println("esperando...");
             //meterse a la cola
             ResourcesManager.addOrder(this);
@@ -69,7 +69,7 @@ public class OrderAgent extends Agent {
             //TODO: empleado general deberá bloquearse esperando respuesta
         }), "a");
 
-        fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_VESTIDO, () -> {
+        fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_VESTIDO, () -> {//aweb va a pasar al estado
             System.out.println("Pizza peperoniada");
             ACLMessage response = msg.createReply();
             response.setContent(MSG_VESTIDA);
@@ -101,7 +101,7 @@ public class OrderAgent extends Agent {
         }), "d");
 
         fsm.registerDefaultTransition("a","a",new String[]{"a"});
-        fsm.registerTransition("a", "b", 1);
+        fsm.registerTransition("a", "b", 1);//si regresa uno es decir succes pasa de estado a b
         fsm.registerDefaultTransition("b", "c");
         fsm.registerDefaultTransition("c", "a",new String[]{"a", "b", "c"});
         fsm.registerTransition("c", "d", 1);
@@ -109,4 +109,3 @@ public class OrderAgent extends Agent {
         super.setup();
     }
 }
-

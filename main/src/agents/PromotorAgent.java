@@ -5,6 +5,7 @@
  */
 package agents;
 
+import UI.MainFrame;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -17,6 +18,7 @@ import jade.wrapper.StaleProxyException;
 import util.Pizza;
 import util.ResourcesManager;
 
+import javax.swing.*;
 import java.util.Date;
 
 /**
@@ -29,8 +31,10 @@ public class PromotorAgent extends Agent {
     MessageTemplate clientTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     MessageTemplate generalTemplate = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
-    protected MasterAgent m_owner;
     public static int clientesA=0;
+    public static int clientesF= ResourcesManager.getSizeClients();
+    //El promotor debe tener quien lo creo para acceder a los metodos y modificar la progres bar
+
     protected void setup() {
         System.out.println("Agent " + getLocalName());
         addBehaviour(new CyclicBehaviour(this) {
@@ -76,9 +80,8 @@ public class PromotorAgent extends Agent {
                         send(mResp);
                         System.out.println("Cliente" +a.getName()+" atendido:3");
                         clientesA++;
-                        System.out.println("clientes atendidos "+clientesA);
-                        //(MasterAgent)(myAgent.incremetBar(clientesA,ResourcesManager.getSizeClients());
-                        //m_owner.incremetBar(clientesA,ResourcesManager.getSizeClients());
+                        System.out.println("clientes atendidos "+clientesA+" faltan "+clientesF);
+                        incremetBar();
                     } catch (StaleProxyException e) {
                         e.printStackTrace();
                     }
@@ -87,4 +90,12 @@ public class PromotorAgent extends Agent {
             }
         });
     }
+        public void incremetBar() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                //((MainFrame) jframe).prog_rumourCount.setValue( Math.round( 100 * 4/10) );
+            }
+        } );
+    }
+
 }

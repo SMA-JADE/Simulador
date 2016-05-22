@@ -1,6 +1,7 @@
 package agents;
 
 import UI.MainFrame;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -20,6 +21,11 @@ import javax.swing.*;
 public class MasterAgent extends Agent {
 
     private JFrame jframe;
+
+    public JFrame getFrame(){
+        return jframe;
+    }
+
     @Override
     protected void setup() {
         DFAgentDescription dfd = new DFAgentDescription();
@@ -43,8 +49,7 @@ public class MasterAgent extends Agent {
         jframe.validate();
     }
 
-    public void createPromotores(int num_promotes){
-        ((MainFrame) jframe).prog_rumourCount.setValue( 0 );
+    public void createPromotores(int num_promotes){//En el MainFrame son creados los prmotores
         PlatformController container = getContainerController();
         try {
             for (int i = 0; i < num_promotes; i++) {
