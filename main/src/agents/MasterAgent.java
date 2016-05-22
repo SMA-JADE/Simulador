@@ -14,6 +14,7 @@ import jade.wrapper.PlatformController;
 import util.ResourcesManager;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * Created by ernesto on 2/05/16.
@@ -30,7 +31,11 @@ public class MasterAgent extends Agent {
     protected void setup() {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
-
+        try {
+            ResourcesManager.setTypeClients(System.getProperty("user.dir")+"/main/src/util/Clientes.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setupUI();
 
         try {

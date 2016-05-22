@@ -3,7 +3,10 @@ package util;
 import agents.OrderAgent;
 import jade.wrapper.AgentController;
 
+import java.io.*;
 import java.util.ArrayList;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by ernesto on 2/05/16.
@@ -20,6 +23,31 @@ public class ResourcesManager {
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
     private static ArrayList<OrderAgent> ordenes = new ArrayList<>();
     private static ArrayList<OrderAgent> horno = new ArrayList<>();
+    public static int numNormalClients, numSpecialClients;
+
+    public static void setTypeClients(String filePath) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+                line = br.readLine();
+            }
+            String[] everything = sb.toString().trim().split(" ");
+            numNormalClients = parseInt(everything[0]);
+            numSpecialClients = parseInt(everything[1]);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            br.close();
+        }
+    }
+
 
     // Añadiendo de forma elegante
     public static void addClient(AgentController c){
