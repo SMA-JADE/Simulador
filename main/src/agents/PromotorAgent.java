@@ -49,7 +49,6 @@ public class PromotorAgent extends Agent {
                     String cliente = p.getCliente();
                     try {
                         AgentController client = getContainerController().getAgent(cliente);
-                        client.activate();
                         ACLMessage response = new ACLMessage(ACLMessage.CONFIRM);
                         response.addReceiver(new AID(client.getName(), true));
                         response.setContent("hot n ready");
