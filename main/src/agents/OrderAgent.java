@@ -50,8 +50,7 @@ public class OrderAgent extends Agent {
 
     public static final int SUCCESS = 1, FAIL = 0;
     private ACLMessage msg;
-    private String clientName = null, order = null;
-    public String promotor;
+    public String clientName = null, order = null, promotor = null;
 
     @Override
     protected void setup() {
@@ -64,7 +63,7 @@ public class OrderAgent extends Agent {
         if (args.length > 2) promotor = (String)args[2];
 
         fsm.registerFirstState(new PizzaState(this, 0, () -> {//funcion lambda
-            System.out.println("esperando...");
+            System.out.println(getLocalName() + ": Esperando...");
             //meterse a la cola
             ResourcesManager.addOrder(this);//metemos la orden a la cola
             msg = blockingReceive();
@@ -73,7 +72,7 @@ public class OrderAgent extends Agent {
         }), "a");
 
         fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_VESTIDO, () -> {//aweb va a pasar al estado
-            System.out.println("Pizza peperoniada");
+            System.out.println(getLocalName() + ": Pizza peperoniada");
             ACLMessage response = msg.createReply();
             response.setContent(MSG_VESTIDA);
             send(response);
@@ -82,7 +81,7 @@ public class OrderAgent extends Agent {
         }), "b");
 
         fsm.registerState(new PizzaState(this, ResourcesManager.TIEMPO_HORNO, () -> {
-            System.out.println("Pizza saliendo del horno");
+            System.out.println(getLocalName() + ": Pizza saliendo del horno");
             //meterse a la cola
             ResourcesManager.addToHorno(this);
             msg = blockingReceive();
@@ -106,8 +105,8 @@ public class OrderAgent extends Agent {
         fsm.registerDefaultTransition("a","a",new String[]{"a"});
         fsm.registerTransition("a", "b", 1);//si regresa uno es decir succes pasa de estado a b
         fsm.registerDefaultTransition("b", "c");
-        fsm.registerDefaultTransition("c", "a",new String[]{"a", "b", "c"});
-        fsm.registerTransition("c", "d", 1);
+        //fsm.registerDefaultTransition("c", "a",new String[]{"a", "b", "c"});
+        fsm.registerDefaultTransition("c", "d");
         addBehaviour(fsm);
         super.setup();
     }

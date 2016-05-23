@@ -14,7 +14,10 @@ public class ResourcesManager {
     public static final long TIEMPO_CORTADO = 1000;
     public static final long TIEMPO_CADUCIDAD = 30000;
 
-    static boolean accesingClients = false;
+    private static boolean accesingClients = false;
+    private static boolean accesingPizzas = false;
+    private static boolean accesingOrdenes = false;
+    private static boolean accesingHorno = false;
 
     private static ArrayList<AgentController> clients = new ArrayList<>();
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
@@ -33,7 +36,7 @@ public class ResourcesManager {
     public static AgentController getClient(){
         AgentController a;
         //TODO: tiempos oscuros de desesperacion, no se si sirva si lo quitas
-        while(accesingClients);
+        while(accesingClients) {}
 
         accesingClients = true;
         a = clients.size() <= 0 ? null : clients.remove(0);
@@ -55,12 +58,31 @@ public class ResourcesManager {
         pizzas.add(pizza);
     }
 
-    public static Pizza popPizza(){
-        return pizzas.remove(0);
+    public static Pizza popPizza(String clientName){
+        if(clientName == null)
+            return popPizza();
+        while(accesingPizzas) {}
+        accesingPizzas = true;
+        Pizza p = null;
+        for(int i=0; i<pizzas.size() ; ++i){
+            if(pizzas.get(i).getCliente().equals(clientName)) {
+                p = pizzas.remove(i);
+            }
+        }
+        accesingPizzas = false;
+        return p;
     }
 
-    public static Pizza peekPizza(){
-        return pizzas.get(0);
+    public static Pizza popPizza(){
+        while(accesingPizzas) {}
+        accesingPizzas = true;
+        Pizza p = null;
+        for(int i=0; i<pizzas.size(); ++i){
+            if(!pizzas.get(i).isEspecial())
+                p = pizzas.remove(i);
+        }
+        accesingPizzas = false;
+        return p;
     }
 
     public static boolean noPizzas(){
@@ -72,7 +94,11 @@ public class ResourcesManager {
     }
 
     public static OrderAgent removeOrder(){
-        return ordenes.remove(0);
+        while(accesingOrdenes) {}
+        accesingOrdenes = true;
+        OrderAgent o = ordenes.size() <= 0 ? null : ordenes.remove(0);
+        accesingOrdenes = false;
+        return o;
     }
 
     public static boolean noOrders(){
@@ -86,7 +112,11 @@ public class ResourcesManager {
     }
 
     public static OrderAgent removeFromHorno(){
-        return horno.remove(0);
+        while(accesingHorno) {}
+        accesingHorno = true;
+        OrderAgent o = horno.size() <= 0 ? null : horno.remove(0);
+        accesingHorno = false;
+        return o;
     }
 
     public static boolean noHorno() { return horno.isEmpty(); }

@@ -1,5 +1,6 @@
 package agents;
 
+import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
 import jade.lang.acl.ACLMessage;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -38,16 +39,22 @@ public class ClientAgent extends Agent {
                 send(order);
                 // Get current time
                 start = System.currentTimeMillis();
-                System.out.print("Orden del cliente " + getName() + " pedida.\n");
+                System.out.print(getLocalName() + ": Orden pedida.\n");
                 ACLMessage msg = blockingReceive();
-                System.out.print("Promotor envio mensaje..\n");
+                System.out.print(getLocalName() + ": Promotor envio mensaje..\n");
                 if (msg != null) {
                     if (msg.getContent().equals(PromotorAgent.WAIT)) {
-                        System.out.println("Agente >> "+myAgent.getLocalName()+", en espera de una pizzona");
+                        System.out.println(getLocalName()+", en espera de una pizzona");
                         //myAgent.doSuspend(); // Para reactivar el agente usar: doActivate()
                         //System.out.println("Agente >> "+myAgent.getLocalName()+", suspendido");
-                    }else
-                        doDelete();
+                        msg = blockingReceive();
+
+                        System.out.println(getLocalName() + ": porfin bye");
+                        System.out.println(getLocalName() + ": msg=" + msg.toString());
+                    }else {
+                        System.out.println(getLocalName() + ": yey bye");
+                    }
+                    doDelete();
                 }
             }
         });

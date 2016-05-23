@@ -25,23 +25,25 @@ public class EGeneralAgent extends Agent {
         if(args.length > 0) puesto = (String)args[0];//obtenemos si es peperoniador o e horno
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
-                if(puesto.equals("Horno") && !ResourcesManager.noHorno()) {
+                if(puesto.equals("Horno")) {
                     OrderAgent orden = ResourcesManager.removeFromHorno();
-                    ACLMessage mensaje = new ACLMessage();
+                    if(orden == null) return;
+                    ACLMessage mensaje = new ACLMessage(ACLMessage.INFORM);
                     mensaje.setContent(OrderAgent.REPLY_SACANDO_HORNO);
                     mensaje.addReceiver(orden.getAID());
                     send(mensaje);
                     ACLMessage msg = blockingReceive();//este mensaje se lo deberia de enviar el peperoniador para que se sepa que hay pizza en el horno
                     //Esta listo y se lo pasamos al promotor
-                    System.out.println("EGeneral: Orden terminada");
+                    System.out.println(getLocalName() + ": Orden terminada");
                     ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
-                    listo.setContent("Orden Terminada");
+                    listo.setContent(orden.clientName);
                     listo.addReceiver(new AID(orden.promotor, true));
                     send(listo);
 
-                }else if(!ResourcesManager.noOrders()){//entonces es peperoniador
+                }else {//entonces es peperoniador
                     OrderAgent orden = ResourcesManager.removeOrder();
-                    ACLMessage mensaje = new ACLMessage();
+                    if(orden == null) return;
+                    ACLMessage mensaje = new ACLMessage(ACLMessage.INFORM);
                     mensaje.setContent(OrderAgent.REPLY_ENTRA_ORDEN);
                     mensaje.addReceiver(orden.getAID());
                     send(mensaje);
