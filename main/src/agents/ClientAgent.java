@@ -1,11 +1,13 @@
 package agents;
 
-import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
+
 import jade.lang.acl.ACLMessage;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import util.Archivo;
+import util.ResourcesManager;
 
+import java.util.Random;
 
 /**
  * @author Gerardo
@@ -14,6 +16,8 @@ public class ClientAgent extends Agent {
 
     String elapsedTimeText;
     long start;
+    Random rand;
+    float randonNum;
     protected void setup() {
         //esperando bienvenida
 
@@ -23,8 +27,16 @@ public class ClientAgent extends Agent {
                 ACLMessage order = wakeMsg.createReply();
                 order.addReceiver(wakeMsg.getSender());
                 order.setPerformative(ACLMessage.REQUEST);
-                //TODO: si tiene contenido,es pizza especial
-                order.setContent("Quiero una pizza bien Hot & Ready.");
+
+                randonNum = rand.nextFloat();
+
+                if (randonNum > (ResourcesManager.numSpecialClients/(ResourcesManager.numSpecialClients+
+                        ResourcesManager.numNormalClients))) {
+                    order.setContent("Quiero una pizza bien Hot & Ready.");
+                    ResourcesManager.numNormalClients--;
+                } else {
+                    ResourcesManager.numSpecialClients--;
+                }
                 send(order);
                 // Get current time
                 start = System.currentTimeMillis();
