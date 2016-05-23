@@ -32,7 +32,7 @@ public class MasterAgent extends Agent {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         try {
-            ResourcesManager.setTypeClients(System.getProperty("user.dir")+"/main/src/util/Clientes.txt");
+            ResourcesManager.setClientsType(System.getProperty("user.dir")+"/main/src/util/Clientes.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }

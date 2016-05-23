@@ -28,7 +28,7 @@ public class ResourcesManager {
     private static ArrayList<OrderAgent> horno = new ArrayList<>();
     public static int numNormalClients, numSpecialClients;
 
-    public static void setTypeClients(String filePath) throws IOException {
+    public static void setClientsType(String filePath) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filePath));
         try {
             StringBuilder sb = new StringBuilder();
