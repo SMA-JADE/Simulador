@@ -3,7 +3,9 @@ package util;
 import agents.OrderAgent;
 import jade.wrapper.AgentController;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
@@ -22,11 +24,13 @@ public class ResourcesManager {
     private static boolean accesingOrdenes = false;
     private static boolean accesingHorno = false;
 
+    public static int wave;
+
     private static ArrayList<AgentController> clients = new ArrayList<>();
     private static ArrayList<Pizza> pizzas = new ArrayList<>();
     private static ArrayList<OrderAgent> ordenes = new ArrayList<>();
     private static ArrayList<OrderAgent> horno = new ArrayList<>();
-    public static int numNormalClients, numSpecialClients;
+    public static ArrayList<Integer> numNormalClients = new ArrayList<>(), numSpecialClients = new ArrayList<>();
 
     public static void setClientsType(String filePath) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -35,13 +39,11 @@ public class ResourcesManager {
             String line = br.readLine();
 
             while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
+                String[] everything = line.split(" ");
+                numNormalClients.add(parseInt(everything[0]));
+                numSpecialClients.add(parseInt(everything[1]));
                 line = br.readLine();
             }
-            String[] everything = sb.toString().trim().split(" ");
-            numNormalClients = parseInt(everything[0]);
-            numSpecialClients = parseInt(everything[1]);
 
 
         } catch (IOException e) {
@@ -93,7 +95,7 @@ public class ResourcesManager {
         accesingPizzas = true;
         Pizza p = null;
         for(int i=0; i<pizzas.size() ; ++i){
-            if(pizzas.get(i).getCliente().equals(clientName)) {
+            if(clientName.equals(pizzas.get(i).getCliente())) {
                 p = pizzas.remove(i);
             }
         }

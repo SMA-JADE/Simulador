@@ -1,16 +1,12 @@
 package agents;
 
 import UI.MainFrame;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.PlatformController;
+import jade.wrapper.StaleProxyException;
 import util.ResourcesManager;
 
 import javax.swing.*;
@@ -105,6 +101,16 @@ public class MasterAgent extends Agent {
             jframe.dispose();
             doDelete();
         }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void createGerente() {
+        AgentController promotor = null;
+        try {
+            promotor = getContainerController().createNewAgent("Gerente", "agents.Gerente", null);
+            promotor.start();
+        } catch (StaleProxyException e) {
             e.printStackTrace();
         }
     }

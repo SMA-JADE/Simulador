@@ -24,8 +24,11 @@ public class ClientsWave extends TickerBehaviour {
     @Override
     protected void onTick() {
         String localName = wave + "-client-" + count;
+        int w = Integer.parseInt(wave.substring(1));
+        ResourcesManager.wave = w;
         try {
-            AgentController client = container.createNewAgent(localName, "agents.ClientAgent", null);
+            AgentController client = container.createNewAgent(localName, "agents.ClientAgent",
+                    new Object[]{w});
             ResourcesManager.addClient(client);
             client.start();
             count++;

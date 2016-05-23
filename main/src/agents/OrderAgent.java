@@ -1,16 +1,11 @@
 package agents;
 
-import jade.core.AID;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
-import util.Pizza;
 import behaviours.PizzaState;
-
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
 import jade.lang.acl.ACLMessage;
+import util.Pizza;
 import util.ResourcesManager;
 
 /**
@@ -98,6 +93,11 @@ public class OrderAgent extends Agent {
             Pizza p = new Pizza(order != null);
             p.setCliente(clientName);
             ResourcesManager.addPizza(p);
+            if(promotor == null) return SUCCESS;
+            ACLMessage listo = new ACLMessage(ACLMessage.INFORM);
+            listo.setContent(clientName);
+            listo.addReceiver(new AID(promotor, true));
+            send(listo);
             this.doDelete();
             return SUCCESS;
         }), "d");

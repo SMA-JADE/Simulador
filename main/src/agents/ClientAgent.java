@@ -1,9 +1,9 @@
 package agents;
 
 
-import jade.lang.acl.ACLMessage;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import util.Archivo;
 import util.ResourcesManager;
 
@@ -27,13 +27,14 @@ public class ClientAgent extends Agent {
                 order.setPerformative(ACLMessage.REQUEST);
 
                 randonNum = Math.random();
-
-                if (randonNum > (ResourcesManager.numSpecialClients/(ResourcesManager.numSpecialClients+
-                        ResourcesManager.numNormalClients))) {
+                int wave = (int)getArguments()[0];
+                int specials = ResourcesManager.numSpecialClients.get(wave);
+                int normales = ResourcesManager.numNormalClients.get(wave);
+                if (randonNum > (specials/(normales+specials))) {
                     order.setContent("Quiero una pizza bien Hot & Ready.");
-                    ResourcesManager.numNormalClients--;
+                    ResourcesManager.numSpecialClients.set(wave, specials-1);
                 } else {
-                    ResourcesManager.numSpecialClients--;
+                    ResourcesManager.numNormalClients.set(wave, normales-1);
                 }
                 send(order);
                 // Get current time
