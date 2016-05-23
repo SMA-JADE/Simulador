@@ -20,19 +20,6 @@ public class ClientAgent extends Agent {
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 ACLMessage wakeMsg = blockingReceive();
-                if (wakeMsg.getContent().equals("hot n ready")){
-                    System.out.println(wakeMsg.getContent() + " LISTOOOOO");
-                    // Get elapsed time in milliseconds
-                    long elapsedTimeMillis = System.currentTimeMillis()-start;
-                    // Get elapsed time in seconds
-                    float elapsedTimeSec = elapsedTimeMillis/1000F;
-                    elapsedTimeText = "\nAgente: " + getName() + "\n" +
-                            "Tiempo en ser atendido (seg): " + elapsedTimeSec + "\n" +
-                            "Pizza entregada por: " + wakeMsg.getSender().getLocalName() + "\n";
-                    Archivo.guardar("archivin.txt", elapsedTimeText);
-                    myAgent.doDelete();
-                    System.out.println("Me mori: " + getLocalName());
-                }
                 ACLMessage order = wakeMsg.createReply();
                 order.addReceiver(wakeMsg.getSender());
                 order.setPerformative(ACLMessage.REQUEST);
@@ -56,6 +43,17 @@ public class ClientAgent extends Agent {
                     }else {
                         System.out.println(getLocalName() + ": yey bye");
                     }
+                    System.out.println(wakeMsg.getContent() + " LISTOOOOO");
+                    // Get elapsed time in milliseconds
+                    long elapsedTimeMillis = System.currentTimeMillis()-start;
+                    // Get elapsed time in seconds
+                    float elapsedTimeSec = elapsedTimeMillis/1000F;
+                    elapsedTimeText = "\nAgente: " + getName() + "\n" +
+                            "Tiempo en ser atendido (seg): " + elapsedTimeSec + "\n" +
+                            "Pizza entregada por: " + wakeMsg.getSender().getLocalName() + "\n";
+                    Archivo.guardar("archivin.txt", elapsedTimeText);
+                    myAgent.doDelete();
+                    System.out.println("Me mori: " + getLocalName());
                     doDelete();
                 }
             }
