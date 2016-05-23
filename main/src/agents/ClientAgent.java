@@ -7,7 +7,6 @@ import jade.core.behaviours.CyclicBehaviour;
 import util.Archivo;
 import util.ResourcesManager;
 
-import java.util.Random;
 
 /**
  * @author Gerardo
@@ -16,8 +15,7 @@ public class ClientAgent extends Agent {
 
     String elapsedTimeText;
     long start;
-    Random rand;
-    float randonNum;
+    double randonNum;
     protected void setup() {
         //esperando bienvenida
 
@@ -28,7 +26,7 @@ public class ClientAgent extends Agent {
                 order.addReceiver(wakeMsg.getSender());
                 order.setPerformative(ACLMessage.REQUEST);
 
-                randonNum = rand.nextFloat();
+                randonNum = Math.random();
 
                 if (randonNum > (ResourcesManager.numSpecialClients/(ResourcesManager.numSpecialClients+
                         ResourcesManager.numNormalClients))) {
