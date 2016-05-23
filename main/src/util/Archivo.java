@@ -8,18 +8,18 @@ import java.io.*;
  */
 public class Archivo {
 
-    public void guardar(String nameFile){
+    public static void guardar(String nameFile, String textContent){
         File f;
         FileWriter w;
         BufferedWriter bw;
         PrintWriter wr;
         try{
             f=new File(nameFile);
-            w=new FileWriter(f);
+            w=new FileWriter(f, true);
             bw=new BufferedWriter(w);
             wr=new PrintWriter(bw);
 
-            wr.write("prueba de escritura");
+            wr.write(textContent);
 
             wr.close();
             bw.close();

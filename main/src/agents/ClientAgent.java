@@ -26,10 +26,12 @@ public class ClientAgent extends Agent {
                     long elapsedTimeMillis = System.currentTimeMillis()-start;
                     // Get elapsed time in seconds
                     float elapsedTimeSec = elapsedTimeMillis/1000F;
-                    elapsedTimeText = "Agente: " + getName() + ", atendido en: " +
-                            elapsedTimeSec + " segundos.\n";
-                    //Archivo.guardar("archivin.txt", elapsedTimeText);
+                    elapsedTimeText = "\nAgente: " + getName() + "\n" +
+                            "Tiempo en ser atendido (seg): " + elapsedTimeSec + "\n" +
+                            "Pizza entregada por: " + wakeMsg.getSender().getLocalName() + "\n";
+                    Archivo.guardar("archivin.txt", elapsedTimeText);
                     myAgent.doDelete();
+                    System.out.println("Me mori: " + getLocalName());
                 }
                 ACLMessage order = wakeMsg.createReply();
                 order.addReceiver(wakeMsg.getSender());
